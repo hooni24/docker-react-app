@@ -1,0 +1,24 @@
+version: '3'
+services:
+  react:
+    # 도커로 실행하는 리액트의 컨테이너명
+    build:
+      context: .
+      dockerfile: dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /usr/src/app/node_modules #이거는 볼륨 제외
+      - .:/usr/src/app #로컬:컨테이너 볼륨매핑
+    stdin_open: true
+
+  react-test:
+    # 리액트 테스트를 위한 컨테이너
+    build:
+      context: .
+      dockerfile: dockerfile.dev
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    # 커맨드를 강제로 넘겨서 테스트 스크립트를 실행시킴
+    command: [ "npm", "t" ]
