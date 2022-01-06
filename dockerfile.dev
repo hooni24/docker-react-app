@@ -1,0 +1,15 @@
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+# package먼저 옮겨서 npm i
+COPY package.json ./
+
+RUN npm i
+
+COPY ./ ./
+
+CMD ["npm", "start"]
+
+# Volume 이용한 실행 명령어
+# docker run -itp 3000:3000 -v /usr/src/app/node_modules -v $(pwd):/usr/src/app kshmarine/docker-react-app
