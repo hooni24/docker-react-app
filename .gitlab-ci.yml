@@ -1,16 +1,7 @@
 stages:
-  - test
   - build
-  - deploy
 
-unit-test:
-  stage: test
-  script: echo 'Testing...!'
-
-unit-build:
+build-image:
   stage: build
-  script: echo 'Building...!'
-
-deploy-to-nas:
-  stage: deploy
-  script: echo 'Deploying...!'
+  script: 
+    - echo 'docker image build'
