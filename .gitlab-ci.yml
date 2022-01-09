@@ -5,12 +5,12 @@ stages:
 
 unit-test:
   stage: test
-  script: echo 'Testing...'
+  script: echo 'Testing...!'
 
 unit-build:
   stage: build
-  script: echo 'Building...'
+  script: echo 'Building...!'
 
 deploy-to-nas:
   stage: deploy
-  script: echo 'Deploying...'
+  script: echo 'Deploying...!'
