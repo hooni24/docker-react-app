@@ -1,8 +1,16 @@
 stages:
-  - build
+  - test
 
-build-image:
-  stage: build
+test-app:
+  stage: test
+  before-script:
+    - echo '---docker image build for test start---'
+    # 테스트를 위한 이미지 빌드 
+    - docker bulid -t firepizza/docker-react-app -f dockerfile.dev ./
+    - echo '---docker image build for test success---'
   script: 
-    - echo 'docker image build'
-    - pwd
+    - echo '=== TEST START ==='
+    # 빌드된 이미지를 이용한 실제 테스트
+    - docker run firepizza/docker-react-app npm run test -- --coverage
+  after-script:
+    - echo ' === TEST SUCCESS ==='
