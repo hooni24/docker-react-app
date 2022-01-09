@@ -5,3 +5,4 @@ build-image:
   stage: build
   script: 
     - echo 'docker image build'
+    - pwd
