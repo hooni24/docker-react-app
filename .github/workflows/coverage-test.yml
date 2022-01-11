@@ -1,6 +1,8 @@
-name: main PR test
+name: coverage test
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -36,4 +38,13 @@ jobs:
         docker run -e CI=true firepizza/docker-react-app npm run test -- --coverage
 
         
-#        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+  # TODO
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: echoing
+      run: |
+        echo "only for merge or push to main branch"
