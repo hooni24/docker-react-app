@@ -33,11 +33,9 @@ jobs:
         image: "firepizza/docker-react-app"
 
     - name: Test React app with Docker
-      env: 
-        CI: true # test 실행시 react-scripts로 넘기는 인자 -> 테스트종료후 CLI exit
       run: |
         echo "=== start test with docker container ==="
-        docker run firepizza/docker-react-app npm run test -- --coverage
+        docker -e CI=true run firepizza/docker-react-app npm run test -- --coverage
 
         
 #        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
