@@ -10,6 +10,6 @@ RUN npm run build
 # 생성된 파일은 컨테이너 내부의 /usr/src/app/build 으로 떨어진다.
 
 
-# 실행될 부분이니까 stage를 지정하지는 않고, 바로 베이스이미지로 이용한다.ㄴ
+# 실행될 부분이니까 stage를 지정하지는 않고, 바로 베이스이미지로 이용한다.
 FROM nginx 
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
