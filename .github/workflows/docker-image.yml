@@ -35,7 +35,7 @@ jobs:
     - name: Test React app with Docker
       run: |
         echo "=== start test with docker container ==="
-        docker -e CI=true run firepizza/docker-react-app npm run test -- --coverage
+        docker run -e CI=true firepizza/docker-react-app npm run test -- --coverage
 
         
 #        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
