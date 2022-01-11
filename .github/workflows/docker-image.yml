@@ -15,11 +15,11 @@ jobs:
     - name: Build the Docker image
       run: |
         echo "=== start creating Docker image with dockerfile.dev ==="
-        docker build -t firepizza/docker-react-app -f dockerfile.dev ./
-    - uses: actions/upload-artifact@main
+        docker build -t firepizza/docker-react-app -f dockerfile.dev ./        
+    - name: Upload image
+      uses: ishworkh/docker-image-artifact-upload@v1
       with:
-        name: docker-image_react-app
-        path: public/
+        image: "firepizza/docker-react-app"
         
   test:
     needs: build
@@ -27,10 +27,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/download-artifact@main
-      with: 
-        name: docker-image_react-app
-        path: public
+    - name: Download image
+      uses: ishworkh/docker-image-artifact-download@v1
+      with:
+        image: "firepizza/docker-react-app"
+
     - name: Test React app with Docker
       run: |
         echo "=== start test with docker container ==="
