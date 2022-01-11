@@ -1,0 +1,40 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        echo "=== start creating Docker image with dockerfile.dev ==="
+        docker build -t firepizza/docker-react-app -f dockerfile.dev ./
+    - uses: actions/upload-artifact@main
+      with:
+        name: docker-image_react-app
+        path: public/
+        
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@main
+      with: 
+        name: docker-image_react-app
+        path: public
+    - name: Test React app with Docker
+      run: |
+        echo "=== start test with docker container ==="
+        docker run kshmarine/docker-react-app npm run test -- --coverage
+
+        
+#        docker build . --file Dockerfile --tag my-image-name:$(date +%s)
