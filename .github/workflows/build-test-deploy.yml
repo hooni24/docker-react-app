@@ -7,7 +7,7 @@ on:
     branches: "**"
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     
     steps:
@@ -16,27 +16,12 @@ jobs:
       run: |
         echo "=== start creating Docker image with dockerfile.dev ==="
         docker build -t firepizza/docker-react-app-test -f dockerfile.dev ./
-    - name: 생성된 이미지 업로드
-      uses: ishworkh/docker-image-artifact-upload@v1
-      with:
-        image: "firepizza/docker-react-app-test"
+        echo "=== Docker image created ==="
         
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - name: build 에서 만든 이미지 다운로드
-      uses: ishworkh/docker-image-artifact-download@v1
-      with:
-        image: "firepizza/docker-react-app-test"
-
     - name: React앱 테스트(in Docker)
       run: |
         echo "=== start test with docker container ==="
         docker run -e CI=true firepizza/docker-react-app-test npm run test -- --coverage
-
         
   # push to main 인 경우에만 deploy 실행
   deploy:
