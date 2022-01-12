@@ -47,9 +47,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: 단순 echo test
-      run: |
-        echo "only for merge or push to main branch"
-        echo "ref ==> ${{ github.ref }}"
-        echo "event_name ==> ${{ github.event_name }}"
     
+    - name: Synology Nas에 업로드할 더미 파일 생성
+      run: echo "${{ github.sha }}" > test.txt
+      
+    - name: Nas에 UPLOAD
+      uses: bungabear/synology_upload_action@master
+      with:
+        host:  ${{ secrets.synologyHost }}
+        username:  ${{ secrets.synologyUsername }}
+        password:  ${{ secrets.synologyPassword }}
+        filepath: test.txt
+        filename:  synology_upload_test.txt
+        uploadpath: /home/share
+        overwrite: true
+        createparent: true
