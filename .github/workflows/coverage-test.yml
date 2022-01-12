@@ -40,7 +40,7 @@ jobs:
         
   # push to main 인 경우에만 deploy 실행
   deploy:
-    if: ${{ github.ref == 'refs/heads/main' }} && ${{ github.event_name == 'push' }}
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
     needs: test
     runs-on: ubuntu-latest
     steps:
