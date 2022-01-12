@@ -7,35 +7,35 @@ on:
     branches: "**"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+#   build:
+#     runs-on: ubuntu-latest
     
-    steps:
-    - uses: actions/checkout@v2
-    - name: 도커 이미지 빌드
-      run: |
-        echo "=== start creating Docker image with dockerfile.dev ==="
-        docker build -t firepizza/docker-react-app -f dockerfile.dev ./        
-    - name: 생성된 이미지 업로드
-      uses: ishworkh/docker-image-artifact-upload@v1
-      with:
-        image: "firepizza/docker-react-app"
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: 테스트용 도커 이미지 빌드
+#       run: |
+#         echo "=== start creating Docker image with dockerfile.dev ==="
+#         docker build -t firepizza/docker-react-app-test -f dockerfile.dev ./
+#     - name: 생성된 이미지 업로드
+#       uses: ishworkh/docker-image-artifact-upload@v1
+#       with:
+#         image: "firepizza/docker-react-app-test"
         
-  test:
-    needs: build
-    runs-on: ubuntu-latest
+#   test:
+#     needs: build
+#     runs-on: ubuntu-latest
     
-    steps:
-    - uses: actions/checkout@v2
-    - name: build 에서 만든 이미지 다운로드
-      uses: ishworkh/docker-image-artifact-download@v1
-      with:
-        image: "firepizza/docker-react-app"
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: build 에서 만든 이미지 다운로드
+#       uses: ishworkh/docker-image-artifact-download@v1
+#       with:
+#         image: "firepizza/docker-react-app-test"
 
-    - name: React앱 테스트(in Docker)
-      run: |
-        echo "=== start test with docker container ==="
-        docker run -e CI=true firepizza/docker-react-app npm run test -- --coverage
+#     - name: React앱 테스트(in Docker)
+#       run: |
+#         echo "=== start test with docker container ==="
+#         docker run -e CI=true firepizza/docker-react-app-test npm run test -- --coverage
 
         
   # push to main 인 경우에만 deploy 실행
@@ -43,22 +43,25 @@ jobs:
     if: |
       github.ref == 'refs/heads/main' &&
       github.event_name == 'push'
-    needs: test
+#     needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     
     - name: Synology Nas에 업로드할 더미 파일 생성
-      run: echo "${{ github.sha }}" > test.txt
+      run: |
+        echo "=== start creating Docker image with dockerfile ==="
+        docker build -t firepizza/docker-react-app-deploy -f dockerfile ./
+        docker push ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/firepizza/docker-react-app-deploy
       
-    - name: Nas에 UPLOAD
-      uses: bungabear/synology_upload_action@master
-      with:
-        host:  ${{ secrets.synologyHost }}
-        username:  ${{ secrets.synologyUsername }}
-        password:  ${{ secrets.synologyPassword }}
-        filepath: test.txt
-        filename:  synology_upload_test.txt
-        uploadpath: /home/share
-        overwrite: true
-        createparent: true
+#    - name: Nas에 UPLOAD
+#       uses: bungabear/synology_upload_action@master
+#       with:
+#         host:  ${{ secrets.synologyHost }}
+#         username:  ${{ secrets.synologyUsername }}
+#         password:  ${{ secrets.synologyPassword }}
+#         filepath: test.txt
+#         filename:  synology_upload_test.txt
+#         uploadpath: /docker/images/docker-react-app
+#         overwrite: true
+#         createparent: true
