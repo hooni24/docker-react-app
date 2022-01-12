@@ -12,11 +12,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
+    - name: 도커 이미지 빌드
       run: |
         echo "=== start creating Docker image with dockerfile.dev ==="
         docker build -t firepizza/docker-react-app -f dockerfile.dev ./        
-    - name: Upload image
+    - name: 생성된 이미지 업로드
       uses: ishworkh/docker-image-artifact-upload@v1
       with:
         image: "firepizza/docker-react-app"
@@ -27,12 +27,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: Download image
+    - name: build 에서 만든 이미지 다운로드
       uses: ishworkh/docker-image-artifact-download@v1
       with:
         image: "firepizza/docker-react-app"
 
-    - name: Test React app with Docker
+    - name: React앱 테스트(in Docker)
       run: |
         echo "=== start test with docker container ==="
         docker run -e CI=true firepizza/docker-react-app npm run test -- --coverage
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: echoing
+    - name: 단순 echo test
       run: |
         echo "only for merge or push to main branch"
         echo "ref ==> ${{ github.ref }}"
