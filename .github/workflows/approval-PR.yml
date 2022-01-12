@@ -1,4 +1,4 @@
-name: approval-workflow
+name: 승인조건 충족시 approved 라벨 추가
 on: pull_request_review
 
 jobs:
