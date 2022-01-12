@@ -52,14 +52,11 @@ jobs:
       run: |
         echo "=== start creating Docker image with dockerfile ==="
         docker build -t app-image -f dockerfile ./
+        docker tag app-image ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/docker-react-app-deploy
         echo "=== end creating Docker image with dockerfile ==="
-      
-        echo "=== start image tag ==="
-        docker tag app-image ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/docker-react-app-deploy:latest
-        echo "=== end image tag ==="
-      
+
         echo "=== start image push to registry ==="
-        docker push ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/docker-react-app-deploy:latest
+        docker push ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/docker-react-app-deploy
         echo "=== end image push to registry ==="
       
 #    - name: Nas에 UPLOAD
