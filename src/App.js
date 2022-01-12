@@ -8,7 +8,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Hello react
-          Pull Request!
+          Pull Request Open
         </p>
         <a
           className="App-link"
