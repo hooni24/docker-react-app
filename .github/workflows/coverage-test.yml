@@ -50,3 +50,4 @@ jobs:
         echo "only for merge or push to main branch"
         echo "ref ==> ${{ github.ref }}"
         echo "event_name ==> ${{ github.event_name }}"
+    
