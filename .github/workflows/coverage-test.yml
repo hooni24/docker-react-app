@@ -1,10 +1,10 @@
-name: coverage test
+name: main 브랜치 PR / push 액션
 
 on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: "**"
 
 jobs:
   build:
@@ -40,8 +40,8 @@ jobs:
         
   # push to main 인 경우에만 deploy 실행
   deploy:
-    if: ${{ github.event_name == 'push' }}
-    needs: build
+    # if: contains(github.ref, 'main') && ${{ github.event_name == 'push' }}
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -49,7 +49,4 @@ jobs:
       run: |
         echo "only for merge or push to main branch"
         echo "ref ==> ${{ github.ref }}"
-        
-        # if: contains(github.ref, 'main')
-        
-        
+        echo "event_name ==> ${{ github.event_name }}"
