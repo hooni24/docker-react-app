@@ -38,13 +38,18 @@ jobs:
         docker run -e CI=true firepizza/docker-react-app npm run test -- --coverage
 
         
-  # TODO
+  # push to main 인 경우에만 deploy 실행
   deploy:
+    if: ${{ github.event_name == 'push' }}
     needs: build
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v2
     - name: echoing
       run: |
         echo "only for merge or push to main branch"
+        echo "ref ==> ${{ github.ref }}"
+        
+        # if: contains(github.ref, 'main')
+        
+        
