@@ -51,8 +51,16 @@ jobs:
     - name: Synology Nas에 업로드할 더미 파일 생성
       run: |
         echo "=== start creating Docker image with dockerfile ==="
-        docker build -t docker-react-app-deploy:latest -f dockerfile ./
+        docker build -t app-image -f dockerfile ./
+        echo "=== end creating Docker image with dockerfile ==="
+      
+        echo "=== start image tag ==="
+        docker tag app-image ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/docker-react-app-deploy:latest
+        echo "=== end image tag ==="
+      
+        echo "=== start image push to registry ==="
         docker push ${{ secrets.REGISTRY_HOST }}:${{ secrets.REGISTRY_PORT }}/docker-react-app-deploy:latest
+        echo "=== end image push to registry ==="
       
 #    - name: Nas에 UPLOAD
 #       uses: bungabear/synology_upload_action@master
