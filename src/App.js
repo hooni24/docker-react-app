@@ -7,8 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Hello react
-          Pull Request Open
+          hy님 하이용ㅎㅎ
         </p>
         <a
           className="App-link"
